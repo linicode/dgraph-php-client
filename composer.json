@@ -1,0 +1,17 @@
+{
+    "name": "linicode/dgraph-php-client",
+    "description": "A Dgraph PHP Client using GRPC",
+    "type": "library",
+    "require": {
+        "google/protobuf": "^3.3",
+        "grpc/grpc": "^1.3"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Josselin Favennec",
+            "email": "jfavennec.favennec@linicode.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
