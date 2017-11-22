@@ -13,5 +13,12 @@
             "email": "jfavennec.favennec@linicode.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "Linicode\\DgraphPHP\\": "src/",
+            "GPBMetadata\\": "src/GPBMetadata",
+            "Protos\\": "src/Protos"
+        }
+    },
     "minimum-stability": "dev"
 }
