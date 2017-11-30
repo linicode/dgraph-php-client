@@ -71,7 +71,7 @@ class DgraphPHPClient {
    * @return \Protos\DgraphClient
    */
   public function anyClient() {
-    return array_rand($this->dc);
+    return $this->dc[array_rand($this->dc)];
   }
 
   /**
