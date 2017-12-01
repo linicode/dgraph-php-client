@@ -2,13 +2,13 @@
 
 namespace Linicode\DgraphPHP;
 
-use Protos\LinRead;
-use Protos\Operation;
+use Api\LinRead;
+use Api\Operation;
 
 class DgraphPHPClient {
 
   /**
-   * @var \Protos\DgraphClient[]
+   * @var \Api\DgraphClient[]
    */
   public $dc;
 
@@ -18,7 +18,7 @@ class DgraphPHPClient {
   public $mu;
 
   /**
-   * @var \Protos\LinRead
+   * @var \Api\LinRead
    */
   public $linRead;
 
@@ -28,7 +28,7 @@ class DgraphPHPClient {
    * The client can be backed by multiple connections (to the same server, or
    * multiple servers in a cluster).
    *
-   * @param \Protos\DgraphClient[] $clients
+   * @param \Api\DgraphClient[] $clients
    */
   public function __construct(array $clients) {
     $this->dc = $clients;
@@ -37,7 +37,7 @@ class DgraphPHPClient {
   }
 
   /**
-   * @param \Protos\LinRead $src
+   * @param \Api\LinRead $src
    */
   public function mergeLinRead(LinRead $src) {
     $this->mu->lock();
@@ -46,7 +46,7 @@ class DgraphPHPClient {
   }
 
   /**
-   * @return \Protos\LinRead
+   * @return \Api\LinRead
    */
   public function getLinRead() {
     $this->mu->lock();
@@ -56,7 +56,7 @@ class DgraphPHPClient {
   }
 
   /**
-   * @param \Protos\Operation $argument
+   * @param \Api\Operation $argument
    * @param array $metadata
    * @param array $options
    *
@@ -68,15 +68,15 @@ class DgraphPHPClient {
   }
 
   /**
-   * @return \Protos\DgraphClient
+   * @return \Api\DgraphClient
    */
   public function anyClient() {
     return $this->dc[array_rand($this->dc)];
   }
 
   /**
-   * @param \Protos\LinRead $dst
-   * @param \Protos\LinRead $src
+   * @param \Api\LinRead $dst
+   * @param \Api\LinRead $src
    */
   public static function mergeLinReads(LinRead $dst, LinRead $src) {
     if ($src == null || !$src->getIds()) {

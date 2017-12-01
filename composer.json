@@ -17,7 +17,7 @@
         "psr-4": {
             "Linicode\\DgraphPHP\\": "src/",
             "GPBMetadata\\": "src/GPBMetadata",
-            "Protos\\": "src/Protos"
+            "Api\\": "src/Api"
         }
     },
     "minimum-stability": "dev"
