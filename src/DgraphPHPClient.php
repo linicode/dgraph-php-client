@@ -2,6 +2,7 @@
 
 namespace Linicode\DgraphPHP;
 
+use Api\Check;
 use Api\LinRead;
 use Api\Operation;
 
@@ -50,9 +51,9 @@ class DgraphPHPClient {
    */
   public function getLinRead() {
     $this->mu->lock();
-    $lin_read = clone $this->linRead;
+    $linRead = clone $this->linRead;
     $this->mu->unlock();
-    return $lin_read;
+    return $linRead;
   }
 
   /**
@@ -63,8 +64,19 @@ class DgraphPHPClient {
    * @return \Grpc\UnaryCall
    */
   public function Alter(Operation $argument, $metadata = [], $options = []) {
-    $any_client = $this->anyClient();
-    return $any_client->Alter($argument, $metadata, $options);
+    $anyClient = $this->anyClient();
+    return $anyClient->Alter($argument, $metadata, $options);
+  }
+
+  /**
+   * @param \Api\Check $argument input argument
+   * @param array $metadata metadata
+   * @param array $options call options
+   */
+  public function CheckVersion(Check $argument, $metadata = [], $options = []) {
+    $anyClient = $this->anyClient();
+    $checkVersionCall = $anyClient->CheckVersion($argument, $metadata, $options);
+    return self::handleResponse($checkVersionCall);
   }
 
   /**
@@ -88,12 +100,31 @@ class DgraphPHPClient {
     }
 
     foreach ($src->getIds() as $gid => $sid) {
-      $dst_ids = $dst->getIds();
-      if (!isset($dst_ids[$gid]) || $dst_ids[$gid] < $sid) {
-        $dst_ids[$gid] = $sid;
-        $dst->setIds($dst_ids);
+      $dstIds = $dst->getIds();
+      if (!isset($dstIds[$gid]) || $dstIds[$gid] < $sid) {
+        $dstIds[$gid] = $sid;
+        $dst->setIds($dstIds);
       }
     }
+  }
+
+  /**
+   * @param \Grpc\UnaryCall $call
+   *
+   * @return mixed
+   */
+  protected static function handleResponse(\Grpc\UnaryCall $call) {
+    $response = $call->wait();
+
+    if (empty($response[0])) {
+      throw new DgraphCallException('Dgraph call error');
+    }
+
+    if (empty($response[0])) {
+      throw new DgraphCallException($response[1]['details'] ?: 'Dgraph call error');
+    }
+
+    return $response[0];
   }
 
 }
