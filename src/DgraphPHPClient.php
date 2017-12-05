@@ -61,17 +61,24 @@ class DgraphPHPClient {
    * @param array $metadata
    * @param array $options
    *
-   * @return \Grpc\UnaryCall
+   * @return \Api\Payload
+   *
+   * @throws \Linicode\DgraphPHP\DgraphCallException
    */
   public function Alter(Operation $argument, $metadata = [], $options = []) {
     $anyClient = $this->anyClient();
-    return $anyClient->Alter($argument, $metadata, $options);
+    $alterCall = $anyClient->Alter($argument, $metadata, $options);
+    return self::handleResponse($alterCall);
   }
 
   /**
    * @param \Api\Check $argument input argument
    * @param array $metadata metadata
    * @param array $options call options
+   *
+   * @return \Api\Version
+   *
+   * @throws \Linicode\DgraphPHP\DgraphCallException
    */
   public function CheckVersion(Check $argument, $metadata = [], $options = []) {
     $anyClient = $this->anyClient();
@@ -112,18 +119,14 @@ class DgraphPHPClient {
    * @param \Grpc\UnaryCall $call
    *
    * @return mixed
+   *
+   * @throws \Linicode\DgraphPHP\DgraphCallException
    */
   protected static function handleResponse(\Grpc\UnaryCall $call) {
     $response = $call->wait();
-
     if (empty($response[0])) {
-      throw new DgraphCallException('Dgraph call error');
+      throw new DgraphCallException(!empty($response[1]->details) ? $response[1]->details : 'Dgraph call error');
     }
-
-    if (empty($response[0])) {
-      throw new DgraphCallException($response[1]['details'] ?: 'Dgraph call error');
-    }
-
     return $response[0];
   }
 
