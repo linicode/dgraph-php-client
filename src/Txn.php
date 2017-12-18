@@ -5,6 +5,7 @@ namespace Linicode\DgraphPHP;
 use Api\Mutation;
 use Api\Request;
 use Api\TxnContext;
+use iter;
 
 /**
  * Class Txn is a single atomic transaction.
@@ -113,7 +114,7 @@ class Txn
         if ($this->context->getStartTs() != $src->getStartTs()) {
             throw new CallException("StartTs mismatch");
         }
-        $merged_keys = array_merge(iterator_to_array($this->context->getKeys()), iterator_to_array($src->getKeys()));
+        $merged_keys = iter\chain($this->context->getKeys(), $src->getKeys());
         $this->context->setKeys($merged_keys);
         return;
     }
