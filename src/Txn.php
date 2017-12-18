@@ -204,7 +204,7 @@ class Txn
      *
      * @return \Api\TxnContext|void
      */
-    protected function discard()
+    public function discard()
     {
         if ($this->finished) {
             return;
