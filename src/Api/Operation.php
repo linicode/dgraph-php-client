@@ -25,10 +25,6 @@ class Operation extends \Google\Protobuf\Internal\Message
      * <code>bool drop_all = 3;</code>
      */
     private $drop_all = false;
-    /**
-     * <code>uint64 startTs = 4;</code>
-     */
-    private $startTs = 0;
 
     public function __construct() {
         \GPBMetadata\Api::initOnce();
@@ -88,25 +84,6 @@ class Operation extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkBool($var);
         $this->drop_all = $var;
-
-        return $this;
-    }
-
-    /**
-     * <code>uint64 startTs = 4;</code>
-     */
-    public function getStartTs()
-    {
-        return $this->startTs;
-    }
-
-    /**
-     * <code>uint64 startTs = 4;</code>
-     */
-    public function setStartTs($var)
-    {
-        GPBUtil::checkUint64($var);
-        $this->startTs = $var;
 
         return $this;
     }
